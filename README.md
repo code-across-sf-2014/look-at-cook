@@ -1,7 +1,7 @@
-[Look at Cook](http://lookatcook.com)
+Look at SF
 =====================================
 
-A budget transparency visualization for Cook County, IL (Chicago's county) displaying all county departments broken down by fund and control officer from 1993 to 2011. Done as a collaboration with Cook County Commissioner John Fritchey.
+A budget transparency visualization for San Francisco.
 
 Dependencies
 ------------
@@ -15,10 +15,6 @@ Dependencies
 Press
 -----
 
-- [O'reilly Radar](http://radar.oreilly.com/2011/09/look-at-cook-gov-data-visualization.html)
-- [govfresh](http://govfresh.com/2011/09/beautiful-budgets-look-at-cook/)
-- [Civic Commons](http://civiccommons.org/2011/11/look-at-cook-open-sourced/)
-- [Metafilter Projects](http://projects.metafilter.com/3241/Look-at-Cook-A-Budget-Visualization-for-Cook-County-IL)
 
 Overview
 --------

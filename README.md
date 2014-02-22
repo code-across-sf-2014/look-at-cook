@@ -27,9 +27,9 @@ This budget visualization is built entirely using HTML and jQuery. There is no s
 
 The bulk of the code is in /scripts/budget_lib.js. This file contains all of the init, data fetching, display and helper functions that the visualization uses to run. To get a good idea of how it works, you should first look at the data in Fusion Tables that it uses:
 
- - [Main budget table](http://www.google.com/fusiontables/DataSource?dsrcid=1227404) (expenditures and appropriations per department per year)
- - [Fund descriptions](http://www.google.com/fusiontables/DataSource?dsrcid=1270538)
- - [Control officer descriptions](http://www.google.com/fusiontables/DataSource?dsrcid=1270539)
+ - [Main budget table](https://www.google.com/fusiontables/data?docid=1k8KzY5CTvhAxKmiwMNJhBixPgoXsICt2Y_IB91w) (expenditures and appropriations per department per year)
+ - [Fund descriptions](https://www.google.com/fusiontables/data?docid=18QIrBR-heTcJpGtOXmIVnxWj0r-xnM-zvijk4UE#rows:id=1)
+ - [Control officer descriptions](https://www.google.com/fusiontables/data?docid=18SocYudip2ffOYD85mNXmDYDQIMhfz0eJ5C3yBU)
 
 The data is read from these tables and the appropriate content on the page is updated via asynchronous callback (for more info on callbacks see: http://docs.jquery.com/Tutorials:How_jQuery_Works#Callback_and_Functions). Whenever a chart point or link are clicked or the URL changes, the jQuery address code detects the change and updates the page using the 'updateDisplay' function. The 'loadFor' function updates all the internal variables and sets the display mode to either default, control officer list, fund detail or control officer detail.
 

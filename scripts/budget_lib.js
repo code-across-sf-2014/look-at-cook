@@ -28,11 +28,11 @@ var BudgetLib = {
 
   //IDs used to reference Fusion Tables, where we store our data
   FusionTableApiKey: "AIzaSyDgYMq5VzeWQdYNpvYfP0W3NuCKYOAB5_Y",
-  BUDGET_TABLE_ID: "1ZJJvlYCYTC1DIgp_tkJKEAs9l0sdO7J4kF8Gv9Y", //main budget table with expenditures/appropriations per department per year
-  FUND_DESCRIPTION_TABLE_ID: "1DVnzs1tOFrVxrf6_jRFeXUe7b6lDYd5jh309Up4",
-  OFFICER_DESCRIPTION_TABLE_ID: "1uSDhUpVbk3c7m0E7iT87LP8GfPk6vnczh-y64sI",
+  BUDGET_TABLE_ID: "1k8KzY5CTvhAxKmiwMNJhBixPgoXsICt2Y_IB91w", //main budget table with expenditures/appropriations per department per year
+  FUND_DESCRIPTION_TABLE_ID: "18QIrBR-heTcJpGtOXmIVnxWj0r-xnM-zvijk4UE",
+  OFFICER_DESCRIPTION_TABLE_ID: "18SocYudip2ffOYD85mNXmDYDQIMhfz0eJ5C3yBU",
   
-  title: "Cook County Budget",
+  title: "SF Budget",
   startYear: 1993,
   endYear: 2012,
   loadYear: 2012, //viewing year

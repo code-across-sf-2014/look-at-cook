@@ -115,42 +115,42 @@ ul { list-style: disc; }
 
   /* Bars */
   .bars span { border-style: solid; border-width: 5px 0; display: block; height: 1px; margin: 1px 0; }
-  
+
   /* Colors */
   .budgeted { color: #264870; }
   .spent { color: #7d9abb; }
   .bars .budgeted { background: #264870; border-color: #264870; }
   .bars .spent { background: #7d9abb; border-color: #7d9abb; }
-  
+
   /* Expanded rows */
   #breakdown .expanded-content td {
     border-bottom: 2px solid #7f7f7f;
     border-top: 0;
     padding-top: 20px;
   }
-  
+
   #breakdown .expanded-head td {
     border-top: 2px solid #7f7f7f;
     font-weight: bold;
   }
-  
+
   .expanded-primary { float: left; width: 48%; }
   .expanded-secondary { float: right; width: 48%; }
-  
+
   /* Nav */
   #breakdown-nav { margin-top: -1px; }
   #breakdown-nav a { display: block; padding: 0.4em 1em 0.3em; }
   #breakdown-nav li { float: left; }
   #breakdown-nav li.current { background: #264870; color: #fff; padding: 0.4em 1em 0.3em; }
   #breakdown-nav ul { list-style: none; margin: 0; }
-  
+
   /* Scorecard */
   #scorecard { border-top: 3px solid #264870; margin: 0; }
   #scorecard h2 { font-size: 20px; }
   #scorecard h2, #scorecard p { margin: 0; }
   #scorecard td { border: 1px solid #ddd; border-bottom: 0; padding: 0.8em 10px; width: 25%; }
-  #scorecard td#scorecard-desc { width: 50%; }  
-  
+  #scorecard td#scorecard-desc { width: 50%; }
+
   /* Stats */
   .stats { list-style: none; margin: 0 0 0.5em 0; }
   .stats li { display: inline; margin-right: 1em; white-space: nowrap; }
@@ -165,7 +165,7 @@ ul { list-style: disc; }
 
   /* Credit */
   #credit { float: right; text-align: right; }
-  
+
   /* Sharing links */
   .share { list-style: none; margin: 0; }
   .share img { float: left; margin-right: 5px; }
@@ -186,7 +186,7 @@ ul { list-style: disc; }
   /* Credit */
   #header #credit { color: #93a4b8; font-size: 11px; font-style: normal; }
   #header #credit a { color: #c8ced5; }
-  
+
   /* Logo */
   #logo { float: left; }
   #logo-print { display: none; }
@@ -210,7 +210,7 @@ a[class*="icon"] {
 /* Timelines */
 #readme { display: none; left: -75px; position: absolute; top: 110px; }
 #timeline { position: relative; }
-#timeline-chart { height: 300px; }
+#timeline-chart { height: 400px; }
 
   /* Sparklines */
   .sparkline { height: 100px; margin-bottom: 15px; }

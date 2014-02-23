@@ -38,7 +38,6 @@ var BudgetQueries = {
 
 	//returns total given year
 	getTotalsForYear: function(name, queryType, year, callback) {
-		debugger;
 		var whereClause = "";
 		if (name != "")
 			whereClause = " WHERE '" + queryType + "' = '" + name + "'";

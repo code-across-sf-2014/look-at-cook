@@ -26,11 +26,13 @@
 var BudgetLib = BudgetLib || {};
 var BudgetLib = {
 
+  /*
   //IDs used to reference Fusion Tables, where we store our data
   FusionTableApiKey: "AIzaSyBPvlxXQ5-yeo9gxY7Y2wTpjFgHOgW2NAg",
   BUDGET_TABLE_ID: "1V4e64LrRhpnQk0LAQab6luVLrMGBGmYshogJ52M", //main budget table with expenditures/appropriations per department per year
   FUND_DESCRIPTION_TABLE_ID: "1DVnzs1tOFrVxrf6_jRFeXUe7b6lDYd5jh309Up4",
   OFFICER_DESCRIPTION_TABLE_ID: "1uSDhUpVbk3c7m0E7iT87LP8GfPk6vnczh-y64sI",
+  */
 
   title: "San Francisco City Budget",
   startYear: 1993,

@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Look at Cook: Brought to you by Cook County Commissioner John Fritchey</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Look at SF</title>
+<!--   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-  <link href="styles/master.css" rel="stylesheet" type="text/css" />
-  <link href="styles/print.css" media="print" rel="stylesheet" type="text/css" />
 
-  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
+  <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+ -->
+  <link href="styles/master.css" rel="stylesheet" type="text/css">
+  <link href="styles/print.css" media="print" rel="stylesheet" type="text/css">
   <!-- javascript libraries -->
+  <script src="scripts/updated/d3.v3.min.js"></script>
+  <script>
+    (function() {
+      var error = console.error.bind(console);
+      var log = console.log.bind(console);
+      d3.csv("data/CAFR_2004_2013_expenditures.csv").get(error, log);
+    })();
+  </script>
+
+  <!--
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="scripts/updated/jquery-migrate-1.2.1.js"></script>
   <script src="scripts/highcharts.js"></script>
   <script src="scripts/jquery.dataTables.js"></script>
   <script src="scripts/dataTables.sorting.js"></script>
   <script src="scripts/jquery.formatCurrency-1.4.0.min.js"></script>
-  <!--
-  <script src="scripts/updated/jquery.address-1.5.min.js"></script>
-  -->
   <script src="scripts/updated/jquery.address-1.5.js"></script>
   <script src="scripts/jquery.cookie.js"></script>
+  -->
 
   <!-- custom javascript -->
-  <script src="scripts/budget_helpers.js?2"></script>
-  <script src="scripts/budget_queries.js?2"></script>
-  <script src="scripts/budget_highcharts.js?2"></script>
-  <script src="scripts/budget_lib.js?4"></script>
+  <!--
+  <script src="scripts/budget_helpers.js"></script>
+  <script src="scripts/budget_queries.js"></script>
+  <script src="scripts/budget_highcharts.js"></script>
+  <script src="scripts/budget_lib.js"></script>
   <script src="scripts/analytics_lib.js"></script>
 
   <script>
@@ -53,6 +62,7 @@
     }
   });
   </script>
+  -->
 </head>
 <body>
 
@@ -61,9 +71,10 @@
     <div id="logo"><!-- FIXME(slighltyoff) --></div>
     <div id="logo-print"><!-- FIXME(slighltyoff) --></div>
     <div id="header-secondary">
-      <p><a href="http://www.fritchey.com"><img alt="John Fritchey" src="images/signature.png" /></a></p>
+      <!-- FIXME(slightlyoff) -->
+<!--       <p><a href="http://www.fritchey.com"><img alt="John Fritchey" src="images/signature.png" /></a></p>
       <p id="credit">A project by <a href="http://www.derekeder.com">Derek Eder</a> and <a href="http://www.c82.net">Nick Rougeux</a> from <a href='http://opencityapps.org'>Open City</a></p>
-    </div>
+ -->    </div>
     <div class="clear"></div>
   </div>
 
@@ -71,7 +82,7 @@
     <div id="content-primary">
       <span id="breadcrumbs"></span>
       <h1>Where's the money going?</h1>
-      <p>Explore Cook County's budget from 1993 to 2012 and learn how the money is being spent. <a onclick="window.scrollTo(0, document.body.scrollHeight);">Read more</a> or <a href='/faq.html'>check out the FAQ</a> &raquo;</p>
+      <p>Explore San Francisco's budget from 2004 to 2013 and learn how the money is being spent. <a onclick="window.scrollTo(0, document.body.scrollHeight);">Read more</a><!--  or <a href='/faq.html'>check out the FAQ</a>--> &raquo; </p>
 
       <div id="timeline">
         <h2></h2>
@@ -125,24 +136,23 @@
 
     <div id="content-secondary">
       <h2>Where's the money going?</h2>
-      <p>Every year our Cook County government budgets and spends more than $3 billion. The County's budget impacts our lives every day. All of its funding comes from you&mdash;your sales and property taxes, your purchase fees on gas, and other goods. All of its spending exists to support you too. County funding drives the jail, public hospitals and clinics, the Cook County courts, and dozens of other civic institutions designed to make our region prosperous, efficient, and fair. Yet, too many residents don't understand what Cook County government is or what it does. They keep asking, "Where exactly does our money go?"</p>
-  	  <p>This budget transparency tool was created to answer that question, but it's only the first step. We need your help. What questions do you have about County spending? What do you want to know about the County budget that this visualization isn't explaining? What do you think of our spending? What can we do to make Cook County government better? Check out the <a href="faq.html">FAQ</a> for more information.</p>
-      <p><a href="http://www.fritchey.com/contact-us-2">Contact John Fritchey</a> with questions or comments or connect with him on <a class="icon-facebook" href="http://www.facebook.com/John.Fritchey">Facebook</a> or <a class="icon-twitter" href="http://twitter.com/johnfritchey">Twitter</a>.</p>
-	  <p class="mute">If you have technical questions or want your city or municipality to use this tool for their budget, feel free to contact <a href='http://twitter.com/derek_eder'>Derek Eder</a> or <a href='http://twitter.com/rougeux'>Nick Rougeux</a> at <a href='http://opencityapps.org'>Open City</a>.</p>
-	</div>
+      <p>Every year the San Francisco government budgets and spends more than $X billion. The s budget impacts our lives every day. All of its funding comes from you&mdash;your sales and property taxes, your purchase fees on gas, and other goods. All of its spending exists to support you too. SF city funding drives the jail, public hospitals and clinics, the courts, and dozens of other civic institutions designed to make our region prosperous, efficient, and fair. Yet, too many residents don't understand what SF's government is or what it does. They keep asking, "Where exactly does our money go?"</p>
+  	</div>
 
-    <div id="content-tertiary">
+<!--     <div id="content-tertiary">
       <a id="download-button" class="action" href="https://www.google.com/fusiontables/DataSource?docid=1V4e64LrRhpnQk0LAQab6luVLrMGBGmYshogJ52M">View &amp; download data</a>
       All the data for this project is freely available to download or explore on Google Fusion Tables.
     </div>
-  </div>
+ -->  </div>
 
+<!--
   <div id="footer">
     <ul class="share">
       <li><a href="http://www.facebook.com/share.php?u=http%3a%2f%2flookatcook.com"><img alt="Facebook" src="images/facebook-lg.png" /> Share budget on <strong>Facebook</strong></a></li>
       <li><a href="http://twitter.com/share?text=Where's%20the%20money%20going%3F%20Explore%20Cook%20County's%20budget&amp;url=http%3a%2f%2flookatcook.com"><img alt="Twitter" src="images/twitter-lg.png" /> Share budget on <strong>Twitter</strong></a></li>
     </ul>
   </div>
+ -->
 </div>
 
 </body>

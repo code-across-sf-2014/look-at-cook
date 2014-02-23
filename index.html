@@ -34,18 +34,19 @@
   </style>
 
   <!-- javascript libraries -->
-  <script src="scripts/updated/d3.v3.min.js"></script>
+  <script src="scripts/updated/d3.v3.min.js" defer></script>
   <script>
+    // Copied and modified from:
+    //    http://bl.ocks.org/mbostock/3884955
     window.addEventListener("load", function(e) {
       var error = console.error.bind(console);
       var log = console.log.bind(console);
       var int = function(v) { return parseInt(v, 10); };
+      var year = function(v) { return Date.parse("01 Jan, "+v+" 00:00:00"); };
 
       var margin = { top: 20, right: 160, bottom: 30, left: 80 },
           width = 920 - margin.left - margin.right,
           height = 400 - margin.top - margin.bottom;
-
-      var parseDate = d3.time.format("%Y%m%d").parse;
 
       var x = d3.time.scale()
           .range([0, width]);
@@ -72,8 +73,10 @@
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
         .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+          .attr("transform", "translate(" + margin.left + ","
+                                          + margin.top + ")");
 
+      // Grab and graph all expeditures
       d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
         var lineItemNames = d3.keys(data[0]).filter(
           function(key) { return key !== "Year"; }
@@ -84,12 +87,12 @@
           return {
             name: name,
             values: data.map(function(d) {
-              return { year: int(d["Year"]), value: +d[name] };
+              return { year: year(d["Year"]), value: +d[name] };
             })
           };
         });
 
-        x.domain(d3.extent(data, function(d) { return int(d.Year); }));
+        x.domain(d3.extent(data, function(d) { return year(d.Year); }));
 
         y.domain([
           d3.min(items, function(c) {
@@ -128,8 +131,8 @@
               return { name: d.name, value: d.values[d.values.length - 1]}; }
             )
             .attr("transform", function(d) {
-              log(d);
-              return "translate(" + x(d.value.year) + "," + y(d.value.value) + ")";
+              return "translate(" + x(d.value.year) + ","
+                                  + y(d.value.value) + ")";
             })
             .attr("x", 3)
             .attr("dy", ".35em")

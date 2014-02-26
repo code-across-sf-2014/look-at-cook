@@ -13,6 +13,74 @@ var error = console.error.bind(console);
 var log = console.log.bind(console);
 var int = function(v) { return parseInt(v, 10); };
 var year = function(v) { return Date.parse("01 Jan, "+v+" 00:00:00"); };
+var d = function(obj, key, val) {
+  if ((!obj) || (!key)) { return val; }
+  var v = obj[key];
+  if (typeof v == "undefined") {
+    return val;
+  }
+  return v;
+};
+
+
+/*
+var BudgetChart = function(args) {
+  this.xAttr = d(args, "xAttr", "year");
+  this.xAttr = d(args, "yAttr", "value");
+  this.color = d3.scale.category10();
+  this.margin = { top: d(args, "top", 20),
+                  right: d(args, "right", 160),
+                  bottom: d(args, "bottom", 30),
+                  left: d(args, "left", 80) };
+  this.width = d(args, "width", 920) - this.margin.left - this.margin.right;
+  this.height = d(args, "height", 400) - this.margin.top - this.margin.bottom;
+
+  this.x = d3.time.scale().range([0, this.width]);
+  this.y = d3.scale.linear().range([this.height, 0]);
+  this.xAxis = d3.svg.axis().scale(this.x).orient("bottom");
+  this.yAxis = d3.svg.axis().scale(this.y).orient("left");
+
+  var getXAttr = function(d) { return this.x(d[this.xAttr]); };
+  var getYAttr = function(d) { return this.y(d[this.yAttr]); };
+  this.line = d3.svg.line().interpolate("linear")
+    .x(getXAttr.bind(this))
+    .y(getYAttr.bind(this));
+
+  this.svg = d3.select("#"+args.id).append("svg")
+    .attr("width", this.width + this.margin.left + this.margin.right)
+    .attr("height", this.height + this.margin.top + this.margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + this.margin.left + ","
+                                    + this.margin.top + ")");
+};
+
+BudgetChart.prototype = Object.create(null, {
+  render: {
+    value: function() {
+
+    }
+  },
+  load: {
+    value: function() {
+
+    }
+  },
+
+});
+
+
+var bc = new BudgetChart({ id: "timeline-chart" });
+bc.load("data/CAFR_2004_2013_expenditures.csv");
+log(bc);
+*/
+
+
+var div = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+/*
+*/
 
 var margin = { top: 20, right: 160, bottom: 30, left: 80 },
     width = 920 - margin.left - margin.right,
@@ -57,7 +125,11 @@ d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
     return {
       name: name,
       values: data.map(function(d) {
-        return { year: year(d["Year"]), value: +d[name] };
+        return {
+          yearName: d["Year"],
+          year: year(d["Year"]),
+          value: +d[name]
+        };
       })
     };
   });
@@ -86,17 +158,58 @@ d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
       .style("text-anchor", "end")
       .text("Amount (thousands)");
 
-  var items = svg.selectAll(".item")
+  var svgItems = svg.selectAll(".item")
       .data(items)
     .enter().append("g")
       .attr("class", "item");
 
-  items.append("path")
+  svgItems.append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
-      .style("stroke", function(d) { return color(d.name); });
+      .style("stroke", function(d) { return color(d.name); })
+      .on("mouseover", function (d) {
+          d3.select(this).style("stroke-width","3px");
+      })
+      .on("mouseout", function(d) {
+          d3.select(this).style("stroke-width","");
+      })
+      .transition()
+      .duration(400)
+      .attrTween('d',function (d){
+        var interpolate = d3.scale.quantile().domain([0,1])
+          .range(d3.range(1, d.values.length+1));
+        return function(t){
+          return line(d.values.slice(0, interpolate(t)));
+        };
+      });
 
-  items.append("text")
+  // Tooltips
+  svgItems.selectAll("circle")
+    .data( function(d) { return(d.values); } )
+    .enter()
+    .append("circle")
+      .attr("class","tooltip-circle")
+      .attr("cx",  function(d,i){ return x(d.year) })
+      .attr("cy", function(d,i){ return y(d.value) })
+      .attr("r", 5)
+        .on("mouseover", function(d) {
+            div.transition().duration(200).style("opacity", .9);
+            div.html(d.yearName + "<br>"  + d.value)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+            })
+        .on("mouseout", function(d) {
+            div.transition()
+                .duration(400)
+                .style("opacity", 0);
+        });
+      /*
+      .style('opacity', 1e-6)//1e-6
+      .attr ("title", maketip);
+      */
+
+  // Labels
+  svgItems.append("text")
       .datum(function(d) {
         return { name: d.name, value: d.values[d.values.length - 1]}; }
       )
@@ -106,7 +219,61 @@ d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
       })
       .attr("x", 3)
       .attr("dy", ".35em").text(function(d) { return d.name; });
+
+  /*
+  svg.selectAll("dot")
+    .data(items)
+  .enter().append("circle")
+    .selectAll("circle")
+    .data(function(d) { return d.values; })
+    .enter().append("circle")
+        .attr("r", 5)
+        .attr("cx", function(d) { return x(d.year); })
+        .attr("cy", function(d, i) { return y(d.value); })
+        .on("mouseover", function(d) {
+            div.transition()
+                .duration(200)
+                .style("opacity", .9);
+            div .html(formatTime(d.date) + "<br/>"  + d.close)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+            })
+        .on("mouseout", function(d) {
+            div.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
+  */
+
+  /*
+  svg.selectAll("dot")
+      .data(items)
+    .enter().append("circle")
+        .attr("r", 5)
+        .attr("cx", function(d, i) {
+          return x(d.values[i].year);
+        })
+        .attr("cy", function(d, i) {
+          return y(d.values[i].value);
+        })
+        .on("mouseover", function(d) {
+            div.transition()
+                .duration(200)
+                .style("opacity", .9);
+            div .html(formatTime(d.date) + "<br/>"  + d.close)
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+            })
+        .on("mouseout", function(d) {
+            div.transition()
+                .duration(500)
+                .style("opacity", 0);
+        });
+    */
 });
+
+/*
+*/
 
 
 })();

@@ -81,11 +81,11 @@ var graphLines = function(id, data, opts) {
   x.domain(d3.extent(data, function(d) { return year(d.Year); }));
 
   y.domain([
-    0,
     /*
+    0,
+    */
     d3.min(items, function(c) {
       return d3.min(c.values, function(v) { return v.value; }); }),
-    */
     d3.max(items, function(c) {
       return d3.max(c.values, function(v) { return v.value; }); })
   ]);
@@ -187,10 +187,18 @@ var graphDetails = function(id, data, opts) {
   graphLines(id, data, opts);
 };
 
+var graphPopulation = graphLines;
+
 // Grab the data, parse it, and graph it
-d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
-  graphTotals("#totals-chart", data,   { width: 920, height: 170 });
-  graphDetails("#details-chart", data, { width: 920, height: 500 });
+d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, cafr_data) {
+  d3.csv("data/Population_1989_2013.csv", function(error, population_data) {
+    graphTotals("#totals-chart", cafr_data,   { width: 920, height: 170 });
+    graphDetails("#details-chart", cafr_data, { width: 920, height: 500 });
+    graphPopulation("#population-chart", population_data,
+                                              { width: 920, height: 170 });
+  })
 });
+
+log(document.querySelector("#percapita").checked);
 
 })();

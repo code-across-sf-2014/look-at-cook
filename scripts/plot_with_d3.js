@@ -12,6 +12,7 @@
 
 var error = console.error.bind(console);
 var log = console.log.bind(console);
+var dir = console.dir.bind(console);
 var int = function(v) { return parseInt(v, 10); };
 var year = function(v) { return Date.parse("01 Jan, "+v+" 00:00:00"); };
 var d = function(obj, key, val) {
@@ -23,13 +24,15 @@ var d = function(obj, key, val) {
   return v;
 };
 
+var chartMap = {};
+
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
 var graphLines = function(id, data, opts) {
   var margin = { top:    d(opts, "top",    20),
-                 right:  d(opts, "right", 160),
+                 right:  d(opts, "right", 200),
                  bottom: d(opts, "bottom", 30),
                  left:   d(opts, "left",   80) };
   var width = d(opts, "width", 920) - margin.left - margin.right;
@@ -53,12 +56,6 @@ var graphLines = function(id, data, opts) {
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.value); });
 
-  var svg = d3.select(id).append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + ","
-                                    + margin.top + ")");
 
   var lineItemNames = d3.keys(data[0]).filter(
     function(key) { return key !== "Year"; }
@@ -90,6 +87,23 @@ var graphLines = function(id, data, opts) {
       return d3.max(c.values, function(v) { return v.value; }); })
   ]);
 
+  var svg;
+
+  if (chartMap[id]) {
+    svg = chartMap[id];
+    svg.selectAll(".item").remove();
+    svg.selectAll("g").remove()
+  } else {
+    svg = d3.select(id).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + ","
+                                      + margin.top + ")");
+    chartMap[id] = svg;
+
+  }
+
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -99,11 +113,12 @@ var graphLines = function(id, data, opts) {
       .attr("class", "y axis")
       .call(yAxis)
     .append("text")
+      .attr("class", "label")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Amount (thousands)");
+      .text(d(opts, "label", "Amount (thousands)"));
 
   var svgItems = svg.selectAll(".item")
       .data(items)
@@ -189,16 +204,78 @@ var graphDetails = function(id, data, opts) {
 
 var graphPopulation = graphLines;
 
+var deflator_data = null;
+var cafr_data = null;
+var population_data = null;
+
+var percapita = document.querySelector("#percapita");
+var inflationadjusted = document.querySelector("#inflationadjusted");
+var update = function() {
+  var label = "Amount (thousands)";
+  var truncated_cafr_data = cafr_data.slice(0);
+  var truncated_deflator_data =
+      deflator_data.slice(deflator_data.length - cafr_data.length);
+
+  var truncated_population_data =
+      population_data.slice(population_data.length - cafr_data.length);
+
+  if (percapita.checked) {
+    if (!population_data) { return; }
+    label = "Per resident";
+    truncated_cafr_data = truncated_cafr_data.map(function(i, idx, a) {
+      var residents = truncated_population_data[idx]["Residents"];
+      var r = {};
+      Object.keys(i).forEach(function(key) {
+        if (key == "Year") {
+          r[key] = i[key];
+        } else {
+          r[key] = Number(i[key]/residents).toFixed(3) * 1000;
+        }
+      });
+      return r;
+    });
+  }
+
+  if (inflationadjusted.checked) {
+    if (!deflator_data) { return; }
+    label = label + ", 2013 dollars";
+    truncated_cafr_data = truncated_cafr_data.map(function(i, idx, a) {
+      var deflator = parseFloat(truncated_deflator_data[idx]["Deflator"]);
+      var r = {};
+      Object.keys(i).forEach(function(key) {
+        if (key == "Year") {
+          r[key] = i[key];
+        } else {
+          r[key] = Number((i[key]/deflator) * 100).toFixed(3);
+        }
+      });
+      return r;
+    });
+  }
+
+  graphTotals("#totals-chart", truncated_cafr_data,
+      { width: 920, height: 170, label: label });
+  graphDetails("#details-chart", truncated_cafr_data,
+      { width: 920, height: 500, label: label });
+  graphPopulation("#population-chart", truncated_population_data,
+      { width: 920, height: 170, label: "" });
+};
+
+percapita.addEventListener("change", update);
+inflationadjusted.addEventListener("change", update);
+
+
 // Grab the data, parse it, and graph it
-d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, cafr_data) {
-  d3.csv("data/Population_1989_2013.csv", function(error, population_data) {
-    graphTotals("#totals-chart", cafr_data,   { width: 920, height: 170 });
-    graphDetails("#details-chart", cafr_data, { width: 920, height: 500 });
-    graphPopulation("#population-chart", population_data,
-                                              { width: 920, height: 170 });
-  })
+d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
+  cafr_data = data;
+  d3.csv("data/Population_1989_2013.csv", function(error, data) {
+    population_data = data;
+    d3.csv("data/GDP_Deflator_1989_2013.csv", function(error, data) {
+      deflator_data = data;
+      update();
+    });
+  });
 });
 
-log(document.querySelector("#percapita").checked);
 
 })();

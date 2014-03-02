@@ -1,4 +1,5 @@
 (function() {
+"use strict";
 
 // TODO(slightlyoff):
 //  - break totals out into their own chart so they don't swamp details
@@ -22,100 +23,43 @@ var d = function(obj, key, val) {
   return v;
 };
 
-
-/*
-var BudgetChart = function(args) {
-  this.xAttr = d(args, "xAttr", "year");
-  this.xAttr = d(args, "yAttr", "value");
-  this.color = d3.scale.category10();
-  this.margin = { top: d(args, "top", 20),
-                  right: d(args, "right", 160),
-                  bottom: d(args, "bottom", 30),
-                  left: d(args, "left", 80) };
-  this.width = d(args, "width", 920) - this.margin.left - this.margin.right;
-  this.height = d(args, "height", 400) - this.margin.top - this.margin.bottom;
-
-  this.x = d3.time.scale().range([0, this.width]);
-  this.y = d3.scale.linear().range([this.height, 0]);
-  this.xAxis = d3.svg.axis().scale(this.x).orient("bottom");
-  this.yAxis = d3.svg.axis().scale(this.y).orient("left");
-
-  var getXAttr = function(d) { return this.x(d[this.xAttr]); };
-  var getYAttr = function(d) { return this.y(d[this.yAttr]); };
-  this.line = d3.svg.line().interpolate("linear")
-    .x(getXAttr.bind(this))
-    .y(getYAttr.bind(this));
-
-  this.svg = d3.select("#"+args.id).append("svg")
-    .attr("width", this.width + this.margin.left + this.margin.right)
-    .attr("height", this.height + this.margin.top + this.margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + this.margin.left + ","
-                                    + this.margin.top + ")");
-};
-
-BudgetChart.prototype = Object.create(null, {
-  render: {
-    value: function() {
-
-    }
-  },
-  load: {
-    value: function() {
-
-    }
-  },
-
-});
-
-
-var bc = new BudgetChart({ id: "timeline-chart" });
-bc.load("data/CAFR_2004_2013_expenditures.csv");
-log(bc);
-*/
-
-
 var div = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
-/*
-*/
+var graphLines = function(id, data, opts) {
+  var margin = { top:    d(opts, "top",    20),
+                 right:  d(opts, "right", 160),
+                 bottom: d(opts, "bottom", 30),
+                 left:   d(opts, "left",   80) };
+  var width = d(opts, "width", 920) - margin.left - margin.right;
+  var height = d(opts, "height", 400) - margin.top - margin.bottom;
 
-var margin = { top: 20, right: 160, bottom: 30, left: 80 },
-    width = 920 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+  var x = d3.time.scale().range([0, width]);
+  var y = d3.scale.linear().range([height, 0]);
 
-var x = d3.time.scale()
-  .range([0, width]);
+  var color = d3.scale.category10();
 
-var y = d3.scale.linear()
-  .range([height, 0]);
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
 
-var color = d3.scale.category10();
+  var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
 
-var xAxis = d3.svg.axis()
-  .scale(x)
-  .orient("bottom");
+  var line = d3.svg.line()
+    .interpolate("linear")
+    .x(function(d) { return x(d.year); })
+    .y(function(d) { return y(d.value); });
 
-var yAxis = d3.svg.axis()
-  .scale(y)
-  .orient("left");
+  var svg = d3.select(id).append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + ","
+                                    + margin.top + ")");
 
-var line = d3.svg.line()
-  .interpolate("linear")
-  .x(function(d) { return x(d.year); })
-  .y(function(d) { return y(d.value); });
-
-var svg = d3.select("#timeline-chart").append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-.append("g")
-  .attr("transform", "translate(" + margin.left + ","
-                                  + margin.top + ")");
-
-// Grab and graph all expeditures
-d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
   var lineItemNames = d3.keys(data[0]).filter(
     function(key) { return key !== "Year"; }
   );
@@ -137,8 +81,11 @@ d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
   x.domain(d3.extent(data, function(d) { return year(d.Year); }));
 
   y.domain([
+    0,
+    /*
     d3.min(items, function(c) {
       return d3.min(c.values, function(v) { return v.value; }); }),
+    */
     d3.max(items, function(c) {
       return d3.max(c.values, function(v) { return v.value; }); })
   ]);
@@ -203,10 +150,6 @@ d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
                 .duration(400)
                 .style("opacity", 0);
         });
-      /*
-      .style('opacity', 1e-6)//1e-6
-      .attr ("title", maketip);
-      */
 
   // Labels
   svgItems.append("text")
@@ -219,61 +162,36 @@ d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
       })
       .attr("x", 3)
       .attr("dy", ".35em").text(function(d) { return d.name; });
+};
 
-  /*
-  svg.selectAll("dot")
-    .data(items)
-  .enter().append("circle")
-    .selectAll("circle")
-    .data(function(d) { return d.values; })
-    .enter().append("circle")
-        .attr("r", 5)
-        .attr("cx", function(d) { return x(d.year); })
-        .attr("cy", function(d, i) { return y(d.value); })
-        .on("mouseover", function(d) {
-            div.transition()
-                .duration(200)
-                .style("opacity", .9);
-            div .html(formatTime(d.date) + "<br/>"  + d.close)
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
-            })
-        .on("mouseout", function(d) {
-            div.transition()
-                .duration(500)
-                .style("opacity", 0);
-        });
-  */
+var graphTotals = function(id, data, opts) {
+  var titles = ["Year", "Total expenditures"];
+  var data = data.map(function(o) {
+    var r = {};
+    titles.forEach(function(t) { r[t] = o[t]; });
+    return r;
+  });
+  graphLines(id, data, opts);
+};
 
-  /*
-  svg.selectAll("dot")
-      .data(items)
-    .enter().append("circle")
-        .attr("r", 5)
-        .attr("cx", function(d, i) {
-          return x(d.values[i].year);
-        })
-        .attr("cy", function(d, i) {
-          return y(d.values[i].value);
-        })
-        .on("mouseover", function(d) {
-            div.transition()
-                .duration(200)
-                .style("opacity", .9);
-            div .html(formatTime(d.date) + "<br/>"  + d.close)
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
-            })
-        .on("mouseout", function(d) {
-            div.transition()
-                .duration(500)
-                .style("opacity", 0);
-        });
-    */
+var graphDetails = function(id, data, opts) {
+  var data = data.map(function(o) {
+    var r = {};
+    Object.keys(o).forEach(function(t) {
+      if (t != "Total expenditures") {
+        r[t] = o[t];
+      }
+    });
+    return r;
+  });
+  graphLines(id, data, opts);
+};
+
+// Grab the data, parse it, and graph it
+d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
+  graphTotals("#totals-chart", data,   { width: 920, height: 170 });
+  graphDetails("#details-chart", data, { width: 920, height: 500 });
+
 });
-
-/*
-*/
-
 
 })();

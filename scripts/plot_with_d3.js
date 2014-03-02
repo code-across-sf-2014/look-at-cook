@@ -1,14 +1,12 @@
+// Copied and modified from:
+//    http://bl.ocks.org/mbostock/3884955
 (function() {
 "use strict";
 
 // TODO(slightlyoff):
-//  - break totals out into their own chart so they don't swamp details
 //  - chart total revenue vs. total outlay
 //  - rebuild-breakdowns
 //  - fix colors!
-
-// Copied and modified from:
-//    http://bl.ocks.org/mbostock/3884955
 
 var error = console.error.bind(console);
 var log = console.log.bind(console);

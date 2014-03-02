@@ -191,7 +191,6 @@ var graphDetails = function(id, data, opts) {
 d3.csv("data/CAFR_2004_2013_expenditures.csv", function(error, data) {
   graphTotals("#totals-chart", data,   { width: 920, height: 170 });
   graphDetails("#details-chart", data, { width: 920, height: 500 });
-
 });
 
 })();

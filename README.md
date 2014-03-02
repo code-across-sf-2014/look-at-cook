@@ -25,7 +25,7 @@ Note on patches/pull requests
 Copyright
 ---------
 
-Copyright (c) 2012 Derek Eder and Nick Rougeux. Released under the MIT License.
-Copyright (c) 2014 Alex Russell and Code Across SF contributors.
+Copyright (c) 2012 Derek Eder and Nick Rougeux. Released under the MIT License. <br>
+Copyright (c) 2014 Alex Russell and Code Across SF 2014 contributors.
 
 See LICENSE for details https://github.com/open-city/look-at-cook/wiki/License

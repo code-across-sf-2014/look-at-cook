@@ -22,6 +22,12 @@ Note on patches/pull requests
 * Make your feature addition or bug fix.
 * Commit and send me a pull request. Bonus points for topic branches.
 
+Data
+----
+
+Input data for our visualizations comes from San Francisco Comprehensive Annual Financial Reports posted
+on the city controller's web site at http://sfcontroller.org/index.aspx?page=118.
+
 Copyright
 ---------
 

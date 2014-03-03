@@ -11,7 +11,7 @@ Dependencies
 Overview
 --------
 
-This budget visualization is built entirely using HTML and JavaScrtip. There is no server-side code.
+This budget visualization is built entirely using HTML and JavaScript. There is no server-side code.
 
 The data is checked into this repo and loaded/parsed from CSV files via D3.
 
@@ -26,6 +26,6 @@ Copyright
 ---------
 
 Copyright (c) 2012 Derek Eder and Nick Rougeux. Released under the MIT License. <br>
-Copyright (c) 2014 Alex Russell and Code Across SF 2014 contributors.
+Copyright (c) 2014 Alex Russell, Marc Joffe and other Code Across SF 2014 contributors.
 
 See LICENSE for details https://github.com/open-city/look-at-cook/wiki/License

@@ -15,18 +15,20 @@ This budget visualization is built entirely using HTML and JavaScript. There is 
 
 The data is checked into this repo and loaded/parsed from CSV files via D3.
 
-Note on patches/pull requests
+How to contribute
 -----------------------------
 
 * Fork the project.
 * Make your feature addition or bug fix.
-* Commit and send me a pull request. Bonus points for topic branches.
+* Commit and send pull requests. Please include a note in your request acknowledging that you assent to the MIT License for your contribute.
 
 Data
 ----
 
-Input data for our visualizations comes from San Francisco Comprehensive Annual Financial Reports posted
-on the city controller's web site at http://sfcontroller.org/index.aspx?page=118.
+Input data for our visualizations comes from San Francisco Comprehensive Annual
+Financial Reports posted on the [city controller's web site](http://sfcontroller.org/index.aspx?page=118).
+
+GDP deflator data (used in calculating inflation adjustments) is [courtesy of the U.S. Department of Commerce: Bureau of Economic Analysis](http://research.stlouisfed.org/fred2/data/GDPDEF.txt).
 
 Copyright
 ---------

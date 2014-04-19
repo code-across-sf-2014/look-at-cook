@@ -1,0 +1,63 @@
+<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>
+      Google Visualization API Sample
+    </title>
+    <script type="text/javascript" src="//www.google.com/jsapi"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://jquery-csv.googlecode.com/files/jquery.csv-0.71.js"></script>
+    <script type="text/javascript">
+      google.load('visualization', '1', {packages: ['corechart']});
+    </script>
+    <script type="text/javascript">
+      function drawVisualization(fname,obj,chartTitle) {
+        // grab the CSV
+        $.get(fname, function(csvString) {
+          // transform the CSV string into a 2-dimensional array
+          var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+          // this new DataTable object holds all the data
+          var data = new google.visualization.arrayToDataTable(arrayData);
+
+          // Create and draw the visualization.
+          var ac = new google.visualization.AreaChart(document.getElementById(obj));
+          ac.draw(data, {
+            title : chartTitle,
+            legend : {position: 'bottom', textStyle: {color: 'black', fontSize: 10}},
+            isStacked: true,
+            width: 1000,
+            height: 400,
+            vAxis: {title: "Amount",textStyle: { color: 'black', fontSize: 10},format:'$#,###,###'},
+            hAxis: {title: "Year",textStyle: { color: 'black', fontSize: 10},format:'####'}
+          });
+        });
+      }
+      
+
+      google.setOnLoadCallback(drawVisualization("./data/CAFR_1989_2013_expenditures.csv","visualization1","San Francisco General Government Expenditures FY 1989-2013"));
+      google.setOnLoadCallback(drawVisualization("./data/CAFR_1989_2013_revenues.csv","visualization2","San Francisco General Government Revenues FY 1989-2013"));
+    </script>
+  </head>
+  <body style="font-family: Arial;border: 0 none;">
+    <h1>Where's the money going?</h1>
+    <p>Explore San Francisco's budget from 1989 to 2013 and learn how the money is being spent.</p>
+
+    <div id="visualization1" style="width: 600px; height: 400px;"></div>
+    <div id="visualization2" style="width: 600px; height: 400px;"></div>
+
+    <div id="content-secondary">
+    <h2>Where's the money going?</h2>
+    <p>Every year the San Francisco government budgets and spends more than $4 billion and all of its funding comes from you &mdash; your sales and property taxes, your purchase fees on gas, and other goods. All of its spending exists to support you too. SF city funding drives the jail, public hospitals and clinics, the courts, and dozens of other civic institutions designed to make our region prosperous, efficient, and fair. Yet, too many residents don't understand what SF's government is or what it does. They keep asking, "Where exactly does our money go?"</p>
+  </div>
+  </div>
+
+
+
+  </body>
+</html>
